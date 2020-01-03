@@ -1,0 +1,14 @@
+department:
+  research:
+    - aws-scheduler
+    - vocabulary
+    - stock-watch
+    - bottleneck-testing
+    - testing-mail
+  eve:
+    - market-watch
+    - eve-military
+    - contracts-appraisal
+    - eve-market-capturer
+    - camper-api
+project:
