@@ -1,4 +1,4 @@
-# AWS Service Tagger
+# Service Tagger for AWS
 
 ## :exclamation: Limitations
 
