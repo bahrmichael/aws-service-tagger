@@ -1,14 +1,14 @@
 # AWS Service Tagger
 
-## Limitations
+## :exclamation: Limitations
 
 * This script currently works for lambda only. Let us know which services you are interested in!
 
-## Install dependencies
+## :factory: Install dependencies
 
 `pip install -r requirements.txt`
 
-## Config structure
+## :triangular_ruler: Config structure
 
 The yaml config specifies which tags and which functions should get which tag values.
 
@@ -46,7 +46,7 @@ project:
     - contracts-appraisal
 ```
 
-## Run
+## :rocket: Run
 
 * Show the help: `python tagger.py --help`
 * Show existing tags: `python tagger.py TAG_1,TAG_2,TAG_N`
@@ -55,6 +55,6 @@ project:
 * Use a different yaml file than `tag_config.yarml`: `python tagger.py TAG --write --file my_config.yaml`
 * Overwrite existing tags: `python tagger.py TAG --write --overwrite`
 
-## Contributions
+## :wrench: Contributions
 
 Yes please! Open a ticket or send a pull request.
