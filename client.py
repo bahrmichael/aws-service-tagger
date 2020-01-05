@@ -14,18 +14,19 @@ class Client:
         else:
             raise Exception(f'Service {self.service} is not yet supported.')
 
-    # todo: add looping
     def get_resources(self):
-        resources = None
+        resources = []
         if self.service == 'lambda':
-            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lambda.html#Lambda.Client.list_functions
-            resources = self.client.list_functions().get('Functions', [])
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lambda.html#Lambda.Paginator.ListFunctions
+            for page in self.client.get_paginator('list_functions').paginate():
+                resources.extend(page.get('Functions'))
             resources.sort(key=lambda x: x['FunctionArn'])
             for r in resources:
                 r['tagger_id'] = r['FunctionArn']
         elif self.service == 'cloudwatchlogs':
-            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/logs.html#CloudWatchLogs.Client.describe_log_groups
-            resources = self.client.describe_log_groups().get('logGroups')
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/logs.html#CloudWatchLogs.Paginator.DescribeLogGroups
+            for page in self.client.get_paginator('describe_log_groups').paginate():
+                resources.extend(page.get('logGroups'))
             resources.sort(key=lambda x: x['logGroupName'])
             for r in resources:
                 r['tagger_id'] = r['logGroupName']
