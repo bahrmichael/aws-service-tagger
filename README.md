@@ -4,6 +4,7 @@
 
 * `lambda` 
 * `cloudwatchlogs` 
+* `cloudfront` 
 
 Let us know which services you are interested in!
 
