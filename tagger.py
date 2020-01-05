@@ -29,7 +29,7 @@ if args.write:
                 print(f"'{target_tag}' is missing from the yaml file. Please add it to the file or omit the tag. Aborting.")
                 exit()
 
-untagged_count = 0
+untagged = []
 for resource in resources:
     print('-----')
     print(f"Loading tags for resource {resource['tagger_id']}")
@@ -64,10 +64,10 @@ for resource in resources:
                     print(f"No new tags for resource {resource['tagger_id']}.")
             else:
                 print("Write is disabled. Tags are not updated. Use --write to activate it. Use --write AND --dry-run for a dry run.")
-                untagged_count += 1
+                untagged.append(resource['tagger_id'])
         else:
             print(f"Function already has the tag '{target_tag}'.")
 
 print('--- DONE ---')
-if untagged_count > 0:
-    print(f"{untagged_count} resources remain untagged.")
+if len(untagged) > 0:
+    print(f"{len(untagged)} resources remain untagged: {untagged}")
