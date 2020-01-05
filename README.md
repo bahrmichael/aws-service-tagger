@@ -1,8 +1,11 @@
 # Service Tagger for AWS
 
-## :exclamation: Limitations
+## :exclamation: Supported Services
 
-* This script currently works for lambda only. Let us know which services you are interested in!
+* `lambda` 
+* `cloudwatchlogs` 
+
+Let us know which services you are interested in!
 
 ## :factory: Install dependencies
 
@@ -49,11 +52,11 @@ project:
 ## :rocket: Run
 
 * Show the help: `python tagger.py --help`
-* Show existing tags: `python tagger.py TAG_1,TAG_2,TAG_N`
-* Use the region `eu-central-1` instead of the default `us-east-1`: `python tagger.py TAG --region eu-central-1`
-* Do a dry run for writing new tags: `python tagger.py TAG --write --dry-run`
-* Use a different yaml file than `tag_config.yarml`: `python tagger.py TAG --write --file my_config.yaml`
-* Overwrite existing tags: `python tagger.py TAG --write --overwrite`
+* Show existing tags: `python tagger.py lambda TAG_1,TAG_2,TAG_N`
+* Use the region `eu-central-1` instead of the default `us-east-1`: `python tagger.py lambda TAG --region eu-central-1`
+* Do a dry run for writing new tags: `python tagger.py lambda TAG --write --dry-run`
+* Use a different yaml file than `tag_config.yarml`: `python tagger.py lambda TAG --write --file my_config.yaml`
+* Overwrite existing tags: `python tagger.py lambda TAG --write --overwrite`
 
 ## :wrench: Contributions
 
