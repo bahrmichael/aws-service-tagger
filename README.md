@@ -1,5 +1,7 @@
 # Service Tagger for AWS
 
+[Read the companion article](https://bahr.dev/2020/01/03/efficient-resource-tagging/)
+
 ## :exclamation: Supported Services
 
 * `lambda` 
