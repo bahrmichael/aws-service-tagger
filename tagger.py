@@ -4,7 +4,7 @@ import yaml
 from client import Client
 
 parser = argparse.ArgumentParser()
-parser.add_argument("service", help="Specify which AWS service to use. Currently supported: lambda, cloudwatchlogs, cloudfront")
+parser.add_argument("service", help="Specify which AWS service to use. Currently supported: lambda, cloudwatchlogs, cloudfront, ec2")
 parser.add_argument("tags", help="Specify which comma separated tags to scan for.")
 parser.add_argument("-r", "--region", help="Specify AWS region. Default is us-east-1.", default="us-east-1")
 parser.add_argument("-w", "--write", help="Write tags to the service. Default is false.", action="store_true")
@@ -23,7 +23,7 @@ print(f"Loaded {len(resources)} resources.")
 
 if args.write:
     with open(args.file) as file:
-        tags_config = yaml.load(file)
+        tags_config = yaml.safe_load(file)
         for target_tag in target_tags:
             if target_tag not in tags_config:
                 print(f"'{target_tag}' is missing from the yaml file. Please add it to the file or omit the tag. Aborting.")

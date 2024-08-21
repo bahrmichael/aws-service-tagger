@@ -3,6 +3,7 @@ import boto3
 CLOUDFRONT = 'cloudfront'
 CLOUDWATCHLOGS = 'cloudwatchlogs'
 LAMBDA = 'lambda'
+EC2 = 'ec2'
 
 
 class Client:
@@ -17,6 +18,8 @@ class Client:
             self.client = boto3.client('logs', self.region)
         elif self.service == CLOUDFRONT:
             self.client = boto3.client('cloudfront', self.region)
+        elif self.service == EC2:
+            self.client = boto3.client('ec2', self.region)
         else:
             raise Exception(f'Service {self.service} is not yet supported.')
 
@@ -43,6 +46,14 @@ class Client:
             resources.sort(key=lambda x: x['ARN'])
             for r in resources:
                 r['tagger_id'] = r['ARN']
+        elif self.service == EC2:
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/describe_instances.html
+            for page in self.client.get_paginator('describe_instances').paginate():
+                for res in page['Reservations']:
+                    resources.extend(res.get('Instances'))
+            resources.sort(key=lambda x: x['InstanceId'])
+            for r in resources:
+                r['tagger_id'] = r['InstanceId']
         return resources
 
     def get_tags(self, tagger_id):
@@ -57,6 +68,22 @@ class Client:
             for item in self.client.list_tags_for_resource(Resource=tagger_id).get('Tags', {}).get('Items', []):
                 result[item['Key']] = item['Value']
             return result
+        elif self.service == EC2:
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/describe_tags.html
+            result = {}
+            for item in self.client.describe_tags(
+                Filters=[
+                    {
+                        'Name': 'resource-id',
+                        'Values': [
+                            tagger_id,
+                        ],
+                    },
+                ],
+            ).get('Tags', []):
+                result[item['Key']] = item['Value']
+            return result
+
 
     def write_tags(self, tagger_id, new_tags):
         if self.service == LAMBDA:
@@ -73,3 +100,18 @@ class Client:
                     'Value': value
                 })
             self.client.tag_resource(Resource=tagger_id, Tags={'Items': items})
+        elif self.service == EC2:
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/create_tags.html
+            items = []
+            for key, value in new_tags.items():
+                items.append({
+                    'Key': key,
+                    'Value': value
+                })
+            self.client.create_tags(
+                DryRun=False,
+                Resources=[
+                    tagger_id,
+                ],
+                Tags=items
+            )
