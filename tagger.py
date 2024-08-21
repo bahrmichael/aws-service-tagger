@@ -23,7 +23,7 @@ print(f"Loaded {len(resources)} resources.")
 
 if args.write:
     with open(args.file) as file:
-        tags_config = yaml.load(file)
+        tags_config = yaml.safe_load(file)
         for target_tag in target_tags:
             if target_tag not in tags_config:
                 print(f"'{target_tag}' is missing from the yaml file. Please add it to the file or omit the tag. Aborting.")
